@@ -88,6 +88,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
             fragmentMatcherFunction: this.config.fragmentMatcher.match,
         });
 
+        // FIXME(rportugal): Do these broadcastWatches + dispatch APOLLO_STORE_WRITE need to be thunks?
         this.broadcastWatches();
 
           this.store.dispatch({
@@ -129,6 +130,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         return Promise.resolve();
     }
 
+    // From inmemory
     public removeOptimistic(id: string) {
         // Throw away optimistic changes of that particular mutation
         const toPerform = this.optimistic.filter(item => item.id !== id);
@@ -143,6 +145,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         this.broadcastWatches();
     }
 
+    // From inmemory
     public performTransaction(transaction: Transaction<NormalizedCacheObject>) {
         // TODO: does this need to be different, or is this okay for an in-memory cache?
 
@@ -160,6 +163,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         this.broadcastWatches();
     }
 
+    // From inmemory
     public recordOptimisticTransaction(transaction: Transaction<NormalizedCacheObject>, id: string) {
         throw new Error(`recordOptimisticTransaction() is not implemented on Redux Cache`);
     }
