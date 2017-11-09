@@ -2,6 +2,7 @@ import {DocumentNode} from 'graphql';
 import {
     Cache,
     ApolloCache,
+    DataProxy,
     Transaction
 } from 'apollo-cache';
 import {
@@ -18,7 +19,7 @@ import {
     writeResultToStore
 } from 'apollo-cache-inmemory';
 import {APOLLO_RESET, APOLLO_STORE_WRITE} from "./constants";
-import {addTypenameToDocument} from 'apollo-utilities';
+import {addTypenameToDocument, getFragmentQueryDocument} from 'apollo-utilities';
 
 const defaultConfig: ApolloReducerConfig = {
     fragmentMatcher: new HeuristicFragmentMatcher(),
@@ -165,6 +166,59 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     // From inmemory
     public recordOptimisticTransaction(transaction: Transaction<NormalizedCacheObject>, id: string) {
         throw new Error(`recordOptimisticTransaction() is not implemented on Redux Cache`);
+    }
+
+    // From inmemory
+    public readQuery<QueryType>(
+        options: DataProxy.Query,
+        optimistic: boolean = false,
+    ): QueryType {
+        console.log('### InMemoryCache.readQuery()');
+        return this.read({
+            query: options.query,
+            variables: options.variables,
+            optimistic,
+        });
+    }
+
+    // From inmemory
+    public readFragment<FragmentType>(
+        options: DataProxy.Fragment,
+        optimistic: boolean = false,
+    ): FragmentType | null {
+        console.log('### InMemoryCache.readFragment()');
+        return this.read({
+            query: this.transformDocument(
+                getFragmentQueryDocument(options.fragment, options.fragmentName),
+            ),
+            variables: options.variables,
+            rootId: options.id,
+            optimistic,
+        });
+    }
+
+    // From inmemory
+    public writeQuery(options: DataProxy.WriteQueryOptions): void {
+        this.write({
+            dataId: 'ROOT_QUERY',
+            result: options.data,
+            // extensions: options.extensions,
+            query: this.transformDocument(options.query),
+            variables: options.variables,
+        });
+    }
+
+    // From inmemory
+    public writeFragment(options: DataProxy.WriteFragmentOptions): void {
+        this.write({
+            dataId: options.id,
+            result: options.data,
+            // extensions: options.extensions,
+            query: this.transformDocument(
+                getFragmentQueryDocument(options.fragment, options.fragmentName),
+            ),
+            variables: options.variables,
+        });
     }
 
     // From inmemory
