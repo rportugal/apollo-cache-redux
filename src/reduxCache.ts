@@ -89,12 +89,11 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
             fragmentMatcherFunction: this.config.fragmentMatcher.match,
         });
 
+        this.store.dispatch({
+            type: APOLLO_STORE_WRITE,
+            data
+        });
         this.broadcastWatches();
-
-          this.store.dispatch({
-              type: APOLLO_STORE_WRITE,
-              data
-          });
     }
 
     public diff<T>(query: Cache.DiffOptions): Cache.DiffResult<T> {
@@ -173,7 +172,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         options: DataProxy.Query,
         optimistic: boolean = false,
     ): QueryType {
-        console.log('### InMemoryCache.readQuery()');
         return this.read({
             query: options.query,
             variables: options.variables,
@@ -186,7 +184,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         options: DataProxy.Fragment,
         optimistic: boolean = false,
     ): FragmentType | null {
-        console.log('### InMemoryCache.readFragment()');
         return this.read({
             query: this.transformDocument(
                 getFragmentQueryDocument(options.fragment, options.fragmentName),
