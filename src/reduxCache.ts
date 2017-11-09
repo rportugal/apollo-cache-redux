@@ -88,7 +88,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
             fragmentMatcherFunction: this.config.fragmentMatcher.match,
         });
 
-        // FIXME(rportugal): Do these broadcastWatches + dispatch APOLLO_STORE_WRITE need to be thunks?
         this.broadcastWatches();
 
           this.store.dispatch({
