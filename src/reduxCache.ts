@@ -4,6 +4,7 @@ import {
     defaultDataIdFromObject,
     defaultNormalizedCacheFactory,
     HeuristicFragmentMatcher,
+    NormalizedCache,
     NormalizedCacheObject
 } from 'apollo-cache-inmemory';
 
@@ -15,8 +16,14 @@ const defaultConfig: ApolloReducerConfig = {
   };
   
 export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
+    private data: NormalizedCache;
+    private config: ApolloReducerConfig;
+    public initialState: any;
+    private addTypename: boolean;
     constructor(config: ApolloReducerConfig = {}) {
         super();
+
+        this.data = this.config.storeFactory();
     }
 
     public restore(data: NormalizedCacheObject): this {
@@ -32,7 +39,31 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     public write(write: Cache.WriteOptions): void {
-        throw new Error(`read() is not implemented on Redux Cache`);
+        throw new Error(`write() is not implemented on Redux Cache`);
+
+        // writeResultToStore({
+        //     dataId: write.dataId,
+        //     result: write.result,
+        //     extensions: write.extensions,
+        //     variables: write.variables,
+        //     document: this.transformDocument(write.query),
+        //     store: this.data,
+        //     dataIdFromObject: this.config.dataIdFromObject,
+        //     fragmentMatcherFunction: this.config.fragmentMatcher.match,
+        //   });
+      
+        //   this.broadcastWatches();
+
+        //   this.store.dispatch({
+        //     type: 'APOLLO_QUERY_RESULT_CLIENT',
+        //     result: { data: storeResult },
+        //     variables,
+        //     document: queryDoc,
+        //     operationName: getOperationName(queryDoc),
+        //     complete: !shouldFetch,
+        //     queryId,
+        //     requestId,
+        //   });
     }
 
     public diff<T>(query: Cache.DiffOptions): Cache.DiffResult<T> {
