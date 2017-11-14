@@ -15,7 +15,7 @@ import {
     NormalizedCacheObject,
     OptimisticStoreItem,
     readQueryFromStore,
-    // record,
+    record,
     writeResultToStore
 } from 'apollo-cache-inmemory';
 import {
@@ -171,8 +171,30 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     // From inmemory
-    public recordOptimisticTransaction(transaction: Transaction<NormalizedCacheObject>, id: string) {
-        throw new Error(`recordOptimisticTransaction() is not implemented on Redux Cache`);
+    public recordOptimisticTransaction(
+        transaction: Transaction<NormalizedCacheObject>,
+        id: string,
+    ) {
+        this.silenceBroadcast = true;
+
+        const patch = record(this.extract(true), recordingCache => {
+            // swapping data instance on 'this' is currently necessary
+            // because of the current architecture
+            const dataCache = this.data;
+            this.data = recordingCache;
+            this.performTransaction(transaction);
+            this.data = dataCache;
+        });
+
+        this.optimistic.push({
+            id,
+            transaction,
+            data: patch,
+        });
+
+        this.silenceBroadcast = false;
+
+        this.broadcastWatches();
     }
 
     // From inmemory

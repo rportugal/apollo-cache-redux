@@ -1156,7 +1156,7 @@ describe('Cache', () => {
         });
     });
 
-    describe('performOptimisticTransaction', () => {
+    describe.skip('performOptimisticTransaction', () => {
         it('will only broadcast once', () => {
             const cache = createCache();
 
