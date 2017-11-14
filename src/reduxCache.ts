@@ -18,7 +18,11 @@ import {
     // record,
     writeResultToStore
 } from 'apollo-cache-inmemory';
-import {APOLLO_RESET, APOLLO_STORE_WRITE} from "./constants";
+import {
+    APOLLO_RESET,
+    APOLLO_RESTORE,
+    APOLLO_STORE_WRITE
+} from "./constants";
 import {addTypenameToDocument, getFragmentQueryDocument} from 'apollo-utilities';
 
 const defaultConfig: ApolloReducerConfig = {
@@ -46,7 +50,10 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     public restore(data: NormalizedCacheObject): this {
-        // if (data) this.data.replace(data);
+        this.store.dispatch({
+            type: APOLLO_RESTORE,
+            data
+        });
         return this;
     }
 
@@ -60,6 +67,9 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     public read<T>(query: Cache.ReadOptions): T | null {
+        console.log('### ReduxCache.read()');
+        console.log('query');
+        console.log(query);
         if (query.rootId && this.getReducer()[query.rootId] === undefined) {
             return null;
         }
@@ -73,6 +83,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
             previousResult: query.previousResult,
             config: this.config,
         };
+        console.log(options);
         return readQueryFromStore(options);
     }
 
@@ -172,6 +183,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         options: DataProxy.Query,
         optimistic: boolean = false,
     ): QueryType {
+        console.log('### ReduxCache.readQuery()');
         return this.read({
             query: options.query,
             variables: options.variables,
@@ -240,6 +252,9 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     private getReducer(): any {
+        console.log('### getReducer()');
+        console.log('current state:');
+        console.log(this.store.getState());
         return this.store.getState().apollo;
     }
 
