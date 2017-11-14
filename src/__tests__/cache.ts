@@ -1,25 +1,26 @@
-import { ApolloCache } from 'apollo-cache';
-import gql, { disableFragmentWarnings } from 'graphql-tag';
+import {ApolloCache} from 'apollo-cache';
+import gql, {disableFragmentWarnings} from 'graphql-tag';
 import { combineReducers, createStore } from 'redux';
 
-import { ReduxCache } from '..';
-import { ApolloReducerConfig, NormalizedCache } from 'apollo-cache-inmemory';
+import {ReduxCache} from '..';
+import {ApolloReducerConfig, NormalizedCache} from 'apollo-cache-inmemory';
 import {apolloReducer} from "../reducer";
+
 disableFragmentWarnings();
 
 describe('Cache', () => {
-    function createCache(
-        {
-            initialState,
-            config,
-        }: {
-            initialState?: any;
-            config?: ApolloReducerConfig;
-        } = {},
-    ): ApolloCache<NormalizedCache> {
-        const store = createStore(combineReducers({ apollo: apolloReducer }));
+    function createCache({
+                             initialState,
+                             config,
+                         }: {
+        initialState?: any;
+        config?: ApolloReducerConfig;
+    } = {},): ApolloCache<NormalizedCache> {
+        const store = createStore(
+            combineReducers({apollo: apolloReducer}),
+        );
         return new ReduxCache(
-            config || { addTypename: false },
+            config || {addTypename: false},
             store
         ).restore(initialState ? initialState.apollo.data : {});
     }
@@ -39,7 +40,6 @@ describe('Cache', () => {
                     },
                 },
             });
-            console.log(typeof proxy);
             expect(
                 proxy.readQuery({
                     query: gql`
@@ -48,7 +48,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ a: 1 });
+            ).toEqual({a: 1});
             expect(
                 proxy.readQuery({
                     query: gql`
@@ -58,7 +58,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ b: 2, c: 3 });
+            ).toEqual({b: 2, c: 3});
             expect(
                 proxy.readQuery({
                     query: gql`
@@ -69,7 +69,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ a: 1, b: 2, c: 3 });
+            ).toEqual({a: 1, b: 2, c: 3});
         });
 
         it('will read some deeply nested data from the store', () => {
@@ -118,7 +118,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ a: 1, d: { e: 4 } });
+            ).toEqual({a: 1, d: {e: 4}});
             expect(
                 proxy.readQuery({
                     query: gql`
@@ -133,7 +133,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ a: 1, d: { e: 4, h: { i: 7 } } });
+            ).toEqual({a: 1, d: {e: 4, h: {i: 7}}});
             expect(
                 proxy.readQuery({
                     query: gql`
@@ -158,7 +158,7 @@ describe('Cache', () => {
                 a: 1,
                 b: 2,
                 c: 3,
-                d: { e: 4, f: 5, g: 6, h: { i: 7, j: 8, k: 9 } },
+                d: {e: 4, f: 5, g: 6, h: {i: 7, j: 8, k: 9}},
             });
         });
 
@@ -189,7 +189,7 @@ describe('Cache', () => {
                         value: 42,
                     },
                 }),
-            ).toEqual({ a: 1, b: 2 });
+            ).toEqual({a: 1, b: 2});
         });
         it('will read some data from the store with null variables', () => {
             const proxy = createCache({
@@ -216,7 +216,7 @@ describe('Cache', () => {
                         value: null,
                     },
                 }),
-            ).toEqual({ a: 1 });
+            ).toEqual({a: 1});
         });
     });
 
@@ -343,7 +343,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ e: 4, h: { i: 7 } });
+            ).toEqual({e: 4, h: {i: 7}});
             expect(
                 proxy.readFragment({
                     id: 'foo',
@@ -360,7 +360,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ e: 4, f: 5, g: 6, h: { i: 7, j: 8, k: 9 } });
+            ).toEqual({e: 4, f: 5, g: 6, h: {i: 7, j: 8, k: 9}});
             expect(
                 proxy.readFragment({
                     id: 'bar',
@@ -370,7 +370,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ i: 7 });
+            ).toEqual({i: 7});
             expect(
                 proxy.readFragment({
                     id: 'bar',
@@ -382,7 +382,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ i: 7, j: 8, k: 9 });
+            ).toEqual({i: 7, j: 8, k: 9});
             expect(
                 proxy.readFragment({
                     id: 'foo',
@@ -406,7 +406,7 @@ describe('Cache', () => {
           `,
                     fragmentName: 'fragmentFoo',
                 }),
-            ).toEqual({ e: 4, f: 5, g: 6, h: { i: 7, j: 8, k: 9 } });
+            ).toEqual({e: 4, f: 5, g: 6, h: {i: 7, j: 8, k: 9}});
             expect(
                 proxy.readFragment({
                     id: 'bar',
@@ -430,7 +430,7 @@ describe('Cache', () => {
           `,
                     fragmentName: 'fragmentBar',
                 }),
-            ).toEqual({ i: 7, j: 8, k: 9 });
+            ).toEqual({i: 7, j: 8, k: 9});
         });
 
         it('will read some data from the store with variables', () => {
@@ -462,7 +462,7 @@ describe('Cache', () => {
                         value: 42,
                     },
                 }),
-            ).toEqual({ a: 1, b: 2 });
+            ).toEqual({a: 1, b: 2});
         });
 
         it('will return null when an id that can’t be found is provided', () => {
@@ -471,7 +471,7 @@ describe('Cache', () => {
                 initialState: {
                     apollo: {
                         data: {
-                            bar: { __typename: 'Bar', a: 1, b: 2, c: 3 },
+                            bar: {__typename: 'Bar', a: 1, b: 2, c: 3},
                         },
                     },
                 },
@@ -480,7 +480,7 @@ describe('Cache', () => {
                 initialState: {
                     apollo: {
                         data: {
-                            foo: { __typename: 'Foo', a: 1, b: 2, c: 3 },
+                            foo: {__typename: 'Foo', a: 1, b: 2, c: 3},
                         },
                     },
                 },
@@ -521,7 +521,7 @@ describe('Cache', () => {
             }
           `,
                 }),
-            ).toEqual({ a: 1, b: 2, c: 3 });
+            ).toEqual({a: 1, b: 2, c: 3});
         });
     });
 
@@ -530,7 +530,7 @@ describe('Cache', () => {
             const proxy = createCache();
 
             proxy.writeQuery({
-                data: { a: 1 },
+                data: {a: 1},
                 query: gql`
           {
             a
@@ -545,7 +545,7 @@ describe('Cache', () => {
             });
 
             proxy.writeQuery({
-                data: { b: 2, c: 3 },
+                data: {b: 2, c: 3},
                 query: gql`
           {
             b
@@ -563,7 +563,7 @@ describe('Cache', () => {
             });
 
             proxy.writeQuery({
-                data: { a: 4, b: 5, c: 6 },
+                data: {a: 4, b: 5, c: 6},
                 query: gql`
           {
             a
@@ -586,7 +586,7 @@ describe('Cache', () => {
             const proxy = createCache();
 
             proxy.writeQuery({
-                data: { a: 1, d: { e: 4 } },
+                data: {a: 1, d: {e: 4}},
                 query: gql`
           {
             a
@@ -612,7 +612,7 @@ describe('Cache', () => {
             });
 
             proxy.writeQuery({
-                data: { a: 1, d: { h: { i: 7 } } },
+                data: {a: 1, d: {h: {i: 7}}},
                 query: gql`
           {
             a
@@ -652,7 +652,7 @@ describe('Cache', () => {
                     a: 1,
                     b: 2,
                     c: 3,
-                    d: { e: 4, f: 5, g: 6, h: { i: 7, j: 8, k: 9 } },
+                    d: {e: 4, f: 5, g: 6, h: {i: 7, j: 8, k: 9}},
                 },
                 query: gql`
           {
@@ -837,11 +837,11 @@ describe('Cache', () => {
 
         it('will write some deeply nested data into the store at any id', () => {
             const proxy = createCache({
-                config: { dataIdFromObject: (o: any) => o.id, addTypename: false },
+                config: {dataIdFromObject: (o: any) => o.id, addTypename: false},
             });
 
             proxy.writeFragment({
-                data: { __typename: 'Foo', e: 4, h: { id: 'bar', i: 7 } },
+                data: {__typename: 'Foo', e: 4, h: {id: 'bar', i: 7}},
                 id: 'foo',
                 fragment: gql`
           fragment fragmentFoo on Foo {
@@ -867,7 +867,7 @@ describe('Cache', () => {
                 },
             });
             proxy.writeFragment({
-                data: { __typename: 'Foo', f: 5, g: 6, h: { id: 'bar', j: 8, k: 9 } },
+                data: {__typename: 'Foo', f: 5, g: 6, h: {id: 'bar', j: 8, k: 9}},
                 id: 'foo',
                 fragment: gql`
           fragment fragmentFoo on Foo {
@@ -900,7 +900,7 @@ describe('Cache', () => {
             });
 
             proxy.writeFragment({
-                data: { i: 10, __typename: 'Bar' },
+                data: {i: 10, __typename: 'Bar'},
                 id: 'bar',
                 fragment: gql`
           fragment fragmentBar on Bar {
@@ -928,7 +928,7 @@ describe('Cache', () => {
             });
 
             proxy.writeFragment({
-                data: { j: 11, k: 12, __typename: 'Bar' },
+                data: {j: 11, k: 12, __typename: 'Bar'},
                 id: 'bar',
                 fragment: gql`
           fragment fragmentBar on Bar {
@@ -962,7 +962,7 @@ describe('Cache', () => {
                     e: 4,
                     f: 5,
                     g: 6,
-                    h: { __typename: 'Bar', id: 'bar', i: 7, j: 8, k: 9 },
+                    h: {__typename: 'Bar', id: 'bar', i: 7, j: 8, k: 9},
                 },
                 id: 'foo',
                 fragment: gql`
@@ -1005,7 +1005,7 @@ describe('Cache', () => {
             });
 
             proxy.writeFragment({
-                data: { __typename: 'Bar', i: 10, j: 11, k: 12 },
+                data: {__typename: 'Bar', i: 10, j: 11, k: 12},
                 id: 'bar',
                 fragment: gql`
           fragment fooFragment on Foo {
@@ -1048,7 +1048,7 @@ describe('Cache', () => {
         });
         it('writes data that can be read back', () => {
             const proxy = createCache({
-                config: { addTypename: true },
+                config: {addTypename: true},
             });
             const readWriteFragment = gql`
         fragment aFragment on query {
@@ -1059,7 +1059,7 @@ describe('Cache', () => {
       `;
             const data = {
                 __typename: 'query',
-                getSomething: { id: '123', __typename: 'Something' },
+                getSomething: {id: '123', __typename: 'Something'},
             };
             proxy.writeFragment({
                 data,
@@ -1076,7 +1076,7 @@ describe('Cache', () => {
 
         it('will write some data to the store with variables', () => {
             const proxy = createCache({
-                config: { addTypename: true },
+                config: {addTypename: true},
             });
 
             proxy.writeFragment({
@@ -1132,14 +1132,14 @@ describe('Cache', () => {
 
             cache.performTransaction(proxy => {
                 proxy.writeQuery({
-                    data: { a: 1 },
+                    data: {a: 1},
                     query,
                 });
 
                 expect(numBroadcasts).toEqual(0);
 
                 proxy.writeQuery({
-                    data: { a: 4, b: 5, c: 6 },
+                    data: {a: 4, b: 5, c: 6},
                     query: gql`
             {
               a
@@ -1180,14 +1180,14 @@ describe('Cache', () => {
 
             cache.recordOptimisticTransaction(proxy => {
                 proxy.writeQuery({
-                    data: { a: 1 },
+                    data: {a: 1},
                     query,
                 });
 
                 expect(numBroadcasts).toEqual(0);
 
                 proxy.writeQuery({
-                    data: { a: 4, b: 5, c: 6 },
+                    data: {a: 4, b: 5, c: 6},
                     query: gql`
             {
               a

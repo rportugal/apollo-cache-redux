@@ -47,6 +47,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         super();
         this.config = { ...defaultConfig, ...config };
         this.store = store;
+        this.addTypename = this.config.addTypename ? true : false;
     }
 
     public restore(data: NormalizedCacheObject): this {
@@ -67,9 +68,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     public read<T>(query: Cache.ReadOptions): T | null {
-        console.log('### ReduxCache.read()');
-        console.log('query');
-        console.log(query);
         if (query.rootId && this.getReducer()[query.rootId] === undefined) {
             return null;
         }
@@ -83,7 +81,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
             previousResult: query.previousResult,
             config: this.config,
         };
-        console.log(options);
         return readQueryFromStore(options);
     }
 
@@ -102,7 +99,7 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
 
         this.store.dispatch({
             type: APOLLO_STORE_WRITE,
-            data
+            data: data.toObject()
         });
         this.broadcastWatches();
     }
@@ -183,7 +180,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         options: DataProxy.Query,
         optimistic: boolean = false,
     ): QueryType {
-        console.log('### ReduxCache.readQuery()');
         return this.read({
             query: options.query,
             variables: options.variables,
@@ -211,7 +207,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         this.write({
             dataId: 'ROOT_QUERY',
             result: options.data,
-            // extensions: options.extensions,
             query: this.transformDocument(options.query),
             variables: options.variables,
         });
@@ -222,7 +217,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
         this.write({
             dataId: options.id,
             result: options.data,
-            // extensions: options.extensions,
             query: this.transformDocument(
                 getFragmentQueryDocument(options.fragment, options.fragmentName),
             ),
@@ -252,9 +246,6 @@ export class ReduxCache extends ApolloCache<NormalizedCacheObject> {
     }
 
     private getReducer(): any {
-        console.log('### getReducer()');
-        console.log('current state:');
-        console.log(this.store.getState());
         return this.store.getState().apollo;
     }
 
