@@ -1,5 +1,5 @@
 import { apolloReducer } from '../reducer';
-import {APOLLO_RESET, APOLLO_RESTORE, APOLLO_STORE_WRITE} from "../constants";
+import {APOLLO_RESET, APOLLO_RESTORE, APOLLO_WRITE} from "../constants";
 
 describe('apollo reducer', () => {
     it('returns the initial state', () => {
@@ -31,13 +31,13 @@ describe('apollo reducer', () => {
         expect(apolloReducer(state, action)).toEqual({ some: 'stuff' });
     });
 
-    it('handles APOLLO_STORE_WRITE', () => {
+    it('handles APOLLO_WRITE', () => {
         const state = {
             some: 'stuff'
         };
 
         const action = {
-            type: APOLLO_STORE_WRITE,
+            type: APOLLO_WRITE,
             data: {
                 more: 'stuff'
             }

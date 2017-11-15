@@ -1,3 +1,3 @@
 export const APOLLO_RESET = 'APOLLO_RESET';
 export const APOLLO_RESTORE = 'APOLLO_RESTORE';
-export const APOLLO_STORE_WRITE = 'APOLLO_STORE_WRITE';
+export const APOLLO_WRITE = 'APOLLO_WRITE';

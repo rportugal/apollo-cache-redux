@@ -1,8 +1,9 @@
-import * as merge from 'deepmerge';
+import { merge } from 'lodash';
+
 import {
     APOLLO_RESET,
     APOLLO_RESTORE,
-    APOLLO_STORE_WRITE
+    APOLLO_WRITE
 } from "./constants";
 
 const initialState = {};
@@ -13,7 +14,7 @@ export function apolloReducer(state = initialState, action: any) {
             return initialState;
         case APOLLO_RESTORE:
             return action.data;
-        case APOLLO_STORE_WRITE:
+        case APOLLO_WRITE:
             return merge(state, action.data);
         default:
             return state;
