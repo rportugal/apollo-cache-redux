@@ -8,18 +8,26 @@ import {
     readQueryFromStore,
     writeResultToStore
 } from 'apollo-cache-inmemory';
+import { combineReducers, createStore, Store } from 'redux';
 import {
     APOLLO_RESET,
     APOLLO_RESTORE,
     APOLLO_WRITE
 } from "./constants";
+import { apolloReducer } from './reducer';
+
+export type ReduxCacheConfig = ApolloReducerConfig & {
+    reduxRootSelector?: string
+}
 
 export class ReduxCache extends InMemoryCache {
-    private store: any;
+    private store: Store<any>;
+    private reduxRootSelector: string;
 
-    constructor(config: ApolloReducerConfig = {}, store: any) {
+    constructor(config: ReduxCacheConfig = {}, store: Store<any>) {
         super(config);
-        this.store = store;
+        this.store = store || createStore(combineReducers({ apollo: apolloReducer } ));
+        this.reduxRootSelector = 'apollo';
     }
 
     public restore(data: NormalizedCacheObject): this {
@@ -90,6 +98,6 @@ export class ReduxCache extends InMemoryCache {
     }
 
     private getReducer(): any {
-        return this.store.getState().apollo;
+        return this.store.getState()[this.reduxRootSelector];
     }
 }

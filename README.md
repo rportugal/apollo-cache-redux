@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/rportugal/apollo-cache-redux.svg?style=svg)](https://circleci.com/gh/rportugal/apollo-cache-redux)
+
 # WIP - DO NOT USE IN PRODUCTION
 
 `apollo-cache-redux` is a cache implementation backed by Redux for Apollo Client 2.0. 
