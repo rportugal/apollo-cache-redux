@@ -24,7 +24,7 @@ export class ReduxCache extends InMemoryCache {
     private store: Store<any>;
     private reduxRootSelector: string;
 
-    constructor(config: ReduxCacheConfig = {}, store: Store<any>) {
+    constructor(config: ReduxCacheConfig = {}, store: Store<any> = undefined) {
         super(config);
         this.store = store || createStore(combineReducers({ apollo: apolloReducer } ));
         this.reduxRootSelector = 'apollo';

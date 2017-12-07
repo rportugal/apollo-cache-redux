@@ -1,4 +1,4 @@
-import { merge } from 'lodash';
+import { merge, cloneDeep } from 'lodash';
 import { Reducer } from 'redux';
 import {
     APOLLO_RESET,
@@ -15,7 +15,8 @@ export function apolloReducer(state = initialState, action: any): Reducer<any> {
         case APOLLO_RESTORE:
             return action.data;
         case APOLLO_WRITE:
-            return merge(state, action.data);
+            const newObj = cloneDeep(state);
+            return merge(newObj, action.data);
         default:
             return state;
     }
