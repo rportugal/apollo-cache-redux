@@ -1,21 +1,17 @@
 import {
     ApolloReducerConfig,
-    defaultDataIdFromObject,
-    HeuristicFragmentMatcher,
     InMemoryCache,
 } from 'apollo-cache-inmemory';
 
-import { reduxNormalizedCacheFactory } from './reduxNormalizedCache';
-
-const defaultConfig: ApolloReducerConfig = {
-    fragmentMatcher: new HeuristicFragmentMatcher(),
-    dataIdFromObject: defaultDataIdFromObject,
-    addTypename: true,
-    storeFactory: reduxNormalizedCacheFactory,
-};
+import {
+    ReduxCacheConfig,
+    reduxNormalizedCacheFactory
+} from './reduxNormalizedCache';
 
 export class ReduxCache extends InMemoryCache {
-    constructor(config: ApolloReducerConfig = {}) {
-        super({ ...defaultConfig, ...config });
+    constructor(config: ApolloReducerConfig = {}, reduxCacheConfig: ReduxCacheConfig) {
+        super(config);
+        // Overwrite the in-memory data object
+        this.data = reduxNormalizedCacheFactory({}, reduxCacheConfig);
     }
 }

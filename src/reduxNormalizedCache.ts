@@ -15,13 +15,18 @@ import {
 } from "redux";
 import { apolloReducer } from "./reducer";
 
+export interface ReduxCacheConfig {
+    reduxRootSelector?: string
+    store? : Store<any>
+}
+
 export class ReduxNormalizedCache implements NormalizedCache {
     private store: Store<any>;
     private reduxRootSelector: string;
 
-    constructor(data: NormalizedCacheObject = {}) {
-        this.reduxRootSelector = 'apollo';
-        this.store = createStore(combineReducers({ [this.reduxRootSelector]: apolloReducer } ));
+    constructor(data: NormalizedCacheObject = {}, reduxCacheConfig: ReduxCacheConfig = {}) {
+        this.reduxRootSelector = reduxCacheConfig.reduxRootSelector || 'apollo';
+        this.store = reduxCacheConfig.store || createStore(combineReducers({ [this.reduxRootSelector]: apolloReducer } ));
         this.store.dispatch({
             type: APOLLO_OVERWRITE,
             data
@@ -64,6 +69,7 @@ export class ReduxNormalizedCache implements NormalizedCache {
 
 export function reduxNormalizedCacheFactory(
     seed?: NormalizedCacheObject,
+    reduxCacheConfig?: ReduxCacheConfig
 ): NormalizedCache {
-    return new ReduxNormalizedCache(seed);
+    return new ReduxNormalizedCache(seed, reduxCacheConfig);
 }
