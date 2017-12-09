@@ -21,7 +21,7 @@ const store = createStore(
     })
 );
 
-const cache = new ReduxCache({}, { store });
+const cache = new ReduxCache({ store });
 
 const client = new ApolloClient({
   link: new HttpLink(),
@@ -29,9 +29,11 @@ const client = new ApolloClient({
 });
 ```
 
-The first argument allows you to customise options passed to the underlying `InMemoryCache` (e.g. `fragmentMatcher`).
-The second argument will take an optional Redux `store`, and an optional `reduxRootSelector`, which customises the reducer name for the cache (default: `apollo`).
-If you don't want to pass in an existing store `ReduxCache` will create one for you.
+The following options are accepted for `ReduxCache`:
+* `store` (optional). An existing Redux store. If you don't want to pass in an existing store `ReduxCache` will create one for you.
+* `reduxRootSelector` (optional). Customises the reducer name for the cache (default: `apollo`).
+* Other options accepted by `InMemoryCache`, to customise the underlying `InMemoryCache` (e.g. `fragmentMatcher`).
+
 
 # Tests
 Apart from the unit tests in this repo, this cache implementation was tested with the `apollo-client` and `react-apollo` end-to-end tests. 

@@ -15,7 +15,7 @@ import {
 } from "redux";
 import { apolloReducer } from "./reducer";
 
-export interface ReduxCacheConfig {
+export interface ReduxNormalizedCacheConfig {
     reduxRootSelector?: string
     store? : Store<any>
 }
@@ -24,7 +24,7 @@ export class ReduxNormalizedCache implements NormalizedCache {
     private store: Store<any>;
     private reduxRootSelector: string;
 
-    constructor(data: NormalizedCacheObject = {}, reduxCacheConfig: ReduxCacheConfig = {}) {
+    constructor(data: NormalizedCacheObject = {}, reduxCacheConfig: ReduxNormalizedCacheConfig = {}) {
         this.reduxRootSelector = reduxCacheConfig.reduxRootSelector || 'apollo';
         this.store = reduxCacheConfig.store || createStore(combineReducers({ [this.reduxRootSelector]: apolloReducer } ));
         this.store.dispatch({
@@ -69,7 +69,7 @@ export class ReduxNormalizedCache implements NormalizedCache {
 
 export function reduxNormalizedCacheFactory(
     seed?: NormalizedCacheObject,
-    reduxCacheConfig?: ReduxCacheConfig
+    reduxCacheConfig?: ReduxNormalizedCacheConfig
 ): NormalizedCache {
     return new ReduxNormalizedCache(seed, reduxCacheConfig);
 }

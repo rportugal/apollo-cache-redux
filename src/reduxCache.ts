@@ -4,14 +4,16 @@ import {
 } from 'apollo-cache-inmemory';
 
 import {
-    ReduxCacheConfig,
+    ReduxNormalizedCacheConfig,
     reduxNormalizedCacheFactory
 } from './reduxNormalizedCache';
 
+export type ReduxCacheConfig = ApolloReducerConfig & ReduxNormalizedCacheConfig;
+
 export class ReduxCache extends InMemoryCache {
-    constructor(config: ApolloReducerConfig = {}, reduxCacheConfig: ReduxCacheConfig) {
+    constructor(config: ReduxCacheConfig = {}) {
         super(config);
         // Overwrite the in-memory data object
-        this.data = reduxNormalizedCacheFactory({}, reduxCacheConfig);
+        this.data = reduxNormalizedCacheFactory({}, config);
     }
 }
