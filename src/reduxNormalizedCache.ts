@@ -17,20 +17,16 @@ import { apolloReducer } from "./reducer";
 
 export interface ReduxNormalizedCacheConfig {
     reduxRootSelector?: string
-    store? : Store<any>
+    store?: Store<any>
 }
 
 export class ReduxNormalizedCache implements NormalizedCache {
     private store: Store<any>;
     private reduxRootSelector: string;
 
-    constructor(data: NormalizedCacheObject = {}, reduxCacheConfig: ReduxNormalizedCacheConfig = {}) {
+    constructor(reduxCacheConfig: ReduxNormalizedCacheConfig = {}) {
         this.reduxRootSelector = reduxCacheConfig.reduxRootSelector || 'apollo';
-        this.store = reduxCacheConfig.store || createStore(combineReducers({ [this.reduxRootSelector]: apolloReducer } ));
-        this.store.dispatch({
-            type: APOLLO_OVERWRITE,
-            data
-        });
+        this.store = reduxCacheConfig.store || createStore(combineReducers({ [this.reduxRootSelector]: apolloReducer }));
     }
     public toObject(): NormalizedCacheObject {
         return this.getReducer();
@@ -41,13 +37,13 @@ export class ReduxNormalizedCache implements NormalizedCache {
     public set(dataId: string, value: StoreObject) {
         this.store.dispatch({
             type: APOLLO_WRITE,
-            data: { [dataId]: value}
+            data: { [dataId]: value }
         });
     }
     public delete(dataId: string): void {
         this.store.dispatch({
             type: APOLLO_WRITE,
-            data: { [dataId]: undefined}
+            data: { [dataId]: undefined }
         });
     }
     public clear(): void {
@@ -68,8 +64,7 @@ export class ReduxNormalizedCache implements NormalizedCache {
 }
 
 export function reduxNormalizedCacheFactory(
-    seed?: NormalizedCacheObject,
     reduxCacheConfig?: ReduxNormalizedCacheConfig
 ): NormalizedCache {
-    return new ReduxNormalizedCache(seed, reduxCacheConfig);
+    return new ReduxNormalizedCache(reduxCacheConfig);
 }

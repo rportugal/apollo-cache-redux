@@ -7,15 +7,17 @@ describe('ReduxNormalizedCache', () => {
         expect(cache.toObject()).toEqual({});
     });
 
-    it('should create a cache based on an Object', () => {
+    it('should .replace() the store', () => {
         const contents: NormalizedCacheObject = { a: {} };
-        const cache = new ReduxNormalizedCache(contents);
+        const cache = new ReduxNormalizedCache();
+        cache.replace(contents);
         expect(cache.toObject()).toEqual(contents);
     });
 
     it(`should .get() an object from the store by dataId`, () => {
         const contents: NormalizedCacheObject = { a: {} };
-        const cache = new ReduxNormalizedCache(contents);
+        const cache = new ReduxNormalizedCache();
+        cache.replace(contents);
         expect(cache.get('a')).toBe(contents.a);
     });
 

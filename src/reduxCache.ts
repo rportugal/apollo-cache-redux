@@ -19,7 +19,7 @@ export class ReduxCache extends InMemoryCache {
     constructor(config: ReduxCacheConfig = {}) {
         super(config);
         // Overwrite the in-memory data object
-        this.data = reduxNormalizedCacheFactory({}, config);
+        this.data = reduxNormalizedCacheFactory(config);
     }
 
     public write(write: Cache.WriteOptions): void {
