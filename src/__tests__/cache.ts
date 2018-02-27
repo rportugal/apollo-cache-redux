@@ -4,36 +4,26 @@ import { combineReducers, createStore } from 'redux';
 
 import {ReduxCache} from '..';
 import {ApolloReducerConfig, NormalizedCache} from 'apollo-cache-inmemory';
-import {apolloReducer} from "../reducer";
+import { apolloReducer } from "../reducer";
 
 disableFragmentWarnings();
 
 describe('Cache', () => {
-    describe.skip('instantiation', () => {
-       it('creates its own store if none is passed', () => {
-       });
-
-       it('allows the use of an existing store', () => {
-
-       });
-
-       it('allows the use of an existing store, with a custom reducer ', () => {
-           // const store = createStore(
-           //     combineReducers({apollo: apolloReducer}),
-           // );
-       })
-    });
-
     function createCache({
                              initialState,
-                             config,
+                             config
                          }: {
         initialState?: any;
         config?: ApolloReducerConfig;
     } = {},): ApolloCache<NormalizedCache> {
+        const store = createStore(
+            combineReducers({
+                apollo: apolloReducer
+            })
+        );
 
         return new ReduxCache(
-            config || {addTypename: false}
+            config ? { ...config, store } : {store, addTypename: false}
         ).restore(initialState ? initialState.apollo.data : {});
     }
 

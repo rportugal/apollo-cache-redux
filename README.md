@@ -11,6 +11,7 @@ npm install apollo-cache-redux --save
 After installing the package:
 ```js
 import { ReduxCache, apolloReducer } from 'apollo-cache-redux';
+import { createStore, combineReducers } from 'redux';
 import { HttpLink } from 'apollo-link-http';
 import ApolloClient from 'apollo-client';
 
@@ -30,7 +31,7 @@ const client = new ApolloClient({
 ```
 
 The following options are accepted for `ReduxCache`:
-* `store` (optional). An existing Redux store. If you don't want to pass in an existing store `ReduxCache` will create one for you.
+* `store`. An existing Redux store. If you don't have one, please create it as per the example above.
 * `reduxRootSelector` (optional). Customises the reducer name for the cache (default: `apollo`).
 * Other options accepted by `InMemoryCache`, to customise the underlying `InMemoryCache` (e.g. `fragmentMatcher`).
 

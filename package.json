@@ -1,6 +1,6 @@
 {
   "name": "apollo-cache-redux",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0",
   "description": "Redux cache for Apollo Client 2.x",
   "main": "./lib/index.js",
   "typings": "./lib/index.d.ts",

@@ -16,7 +16,7 @@ import {cloneDeep} from 'lodash';
 export type ReduxCacheConfig = ApolloReducerConfig & ReduxNormalizedCacheConfig;
 
 export class ReduxCache extends InMemoryCache {
-    constructor(config: ReduxCacheConfig = {}) {
+    constructor(config: ReduxCacheConfig) {
         super(config);
         // Overwrite the in-memory data object
         this.data = reduxNormalizedCacheFactory(config);
