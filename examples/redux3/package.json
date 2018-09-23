@@ -1,0 +1,26 @@
+{
+  "name": "redux3-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "babel-node src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-boost": "0.1.16",
+    "apollo-cache-redux": "../..",
+    "cross-fetch": "2.2.2",
+    "graphql": "14.0.2",
+    "redux": "3.7.2",
+    "redux-logger": "3.0.6"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-react": "6.24.1"
+  }
+}
