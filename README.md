@@ -2,6 +2,7 @@
 
 `apollo-cache-redux` is a cache implementation backed by Redux for Apollo Client 2.0. 
 It heavily reuses cache normalization code from `apollo-cache-inmemory`. 
+Works with Redux 3.x and 4.x .
  
 # Installation
 ```javascript
