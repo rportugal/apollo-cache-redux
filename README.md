@@ -1,3 +1,5 @@
+# **DEPRECATED** - no longer actively maintained
+
 [![npm version](https://badge.fury.io/js/apollo-cache-redux.svg)](https://badge.fury.io/js/apollo-cache-redux) [![CircleCI](https://circleci.com/gh/rportugal/apollo-cache-redux.svg?style=svg)](https://circleci.com/gh/rportugal/apollo-cache-redux) 
 
 `apollo-cache-redux` is a cache implementation backed by Redux for Apollo Client 2.0. 
